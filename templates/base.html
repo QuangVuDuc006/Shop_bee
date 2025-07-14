@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop Bee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- 🔝 TOPBAR -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <a href="#">Kênh Người Bán</a>
+            <span>|</span>
+            <a href="#">Tải ứng dụng</a>
+            <span>|</span>
+            <span>Kết nối</span>
+            <a href="https://www.facebook.com/quang.vu.uc.579118" target="_blank">
+                <img src="{{ url_for('static', filename='facebook.png') }}" class="social-icon" alt="Facebook">
+            </a>
+            <a href="https://zalo.me/0399109399" target="_blank">
+                <img src="{{ url_for('static', filename='zalo.png') }}" class="social-icon" alt="Zalo">
+            </a>
+        </div>
+        <div class="topbar-right">
+            {% if session.get('user') %}
+                <span>👋 Xin chào, {{ session['user'] }}</span>
+                <a href="{{ url_for('logout') }}">Đăng xuất</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Đăng Nhập</a>
+                <a href="{{ url_for('register') }}">Đăng Ký</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 🧭 NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="logo-slogan">
+                <a href="{{ url_for('home') }}" class="logo">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="ShopBee Logo" class="logo-img">
+                </a>
+                <div class="logo-divider"></div>
+                <span class="slogan">Mua sắm thả ga <br> Không lo về giá</span>
+            </div>
+        </div>
+
+        {% if request.path not in ['/login', '/register'] %}
+        <div class="navbar-center">
+            <input type="text" placeholder="Click vào đây - Tìm kiếm vô vàn" class="search-box">
+            <button class="search-btn">🔍</button>
+        </div>
+
+        <div class="navbar-right">
+            <a href="{{ url_for('cart') }}" class="cart-icon">🛒</a>
+        </div>
+        {% endif %}
+    </nav>
+
+    <!-- 💬 FLASH MESSAGES -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- 📦 MAIN CONTENT -->
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- 🔧 SCRIPT TỰ ẨN THÔNG BÁO -->
+    <script>
+    setTimeout(() => {
+        document.querySelectorAll('.flash').forEach(el => {
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 500);
+        });
+    }, 2000);
+    </script>
+
+</body>
+</html>

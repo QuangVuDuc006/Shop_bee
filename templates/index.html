@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="banner">
+        <img src="https://cf.shopee.vn/file/vn-50009109-77b073f98695082eb9e9b9d0d41be3d2_xxhdpi" alt="banner">
+    </div>
+
+    <div class="category-section">
+        <h2>Danh mục</h2>
+        <div class="category-grid">
+            <div class="category-item">👕 Thời trang</div>
+            <div class="category-item">📱 Điện thoại</div>
+            <div class="category-item">🍼 Mẹ & Bé</div>
+            <div class="category-item">👟 Giày dép</div>
+        </div>
+    </div>
+
+    <div class="product-section">
+        <h2>Sản phẩm nổi bật</h2>
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <h3>{{ product.name }}</h3>
+                    <p>Giá: {{ product.price }} VNĐ</p>
+                    <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="add-to-cart-btn">➕ Thêm vào giỏ</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

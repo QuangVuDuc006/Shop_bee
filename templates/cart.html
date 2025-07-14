@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="cart-container">
+    <h1>🛍️ Giỏ hàng của bạn</h1>
+
+    {% if cart %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ "{:,.0f}".format(item.price) }} VNĐ</td>
+                    <td>
+                        <a href="{{ url_for('decrease', product_id=item.id) }}">➖</a>
+                        {{ item.quantity }}
+                        <a href="{{ url_for('increase', product_id=item.id) }}">➕</a>
+                    </td>
+                    <td>{{ "{:,.0f}".format(item.subtotal) }} VNĐ</td>
+                    <td>
+                        <a href="{{ url_for('remove', product_id=item.id) }}" class="remove-btn">❌</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="cart-total">💰 Tổng cộng: {{ "{:,.0f}".format(total) }} VNĐ</h2>
+    {% else %}
+        <p class="empty-cart">Giỏ hàng đang trống 😢</p>
+    {% endif %}
+
+    <div class="back-home">
+        <a href="{{ url_for('home') }}" class="back-link">⬅️ Quay về trang chủ</a>
+    </div>
+</div>
+{% endblock %}
