@@ -1,30 +1,58 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="banner">
-        <img src="https://cf.shopee.vn/file/vn-50009109-77b073f98695082eb9e9b9d0d41be3d2_xxhdpi" alt="banner">
-    </div>
-
-    <div class="category-section">
-        <h2>Danh mục</h2>
-        <div class="category-grid">
-            <div class="category-item">👕 Thời trang</div>
-            <div class="category-item">📱 Điện thoại</div>
-            <div class="category-item">🍼 Mẹ & Bé</div>
-            <div class="category-item">👟 Giày dép</div>
+<!-- 🖼️ BANNER -->
+<div class="homepage-banner">
+    <!-- ẢNH TO BÊN TRÁI (Slideshow) -->
+    <div class="banner-left">
+        <div class="big-banner-slider">
+            <img src="{{ url_for('static', filename='banner/banner1.png') }}" class="big-slide active" alt="Banner 1">
+            <img src="{{ url_for('static', filename='banner/banner4.png') }}" class="big-slide" alt="Banner 2">
+            <img src="{{ url_for('static', filename='banner/banner5.png') }}" class="big-slide" alt="Banner 3">
         </div>
     </div>
 
-    <div class="product-section">
-        <h2>Sản phẩm nổi bật</h2>
-        <div class="product-grid">
-            {% for product in products %}
-                <div class="product-card">
-                    <h3>{{ product.name }}</h3>
-                    <p>Giá: {{ product.price }} VNĐ</p>
-                    <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="add-to-cart-btn">➕ Thêm vào giỏ</a>
-                </div>
-            {% endfor %}
-        </div>
+    <!-- 2 ẢNH NHỎ BÊN PHẢI -->
+    <div class="banner-right">
+        <img src="{{ url_for('static', filename='banner/banner2.png') }}" class="small-banner" alt="Small 1">
+        <img src="{{ url_for('static', filename='banner/banner3.png') }}" class="small-banner" alt="Small 2">
     </div>
+</div>
+
+<!-- 🗂️ DANH MỤC PHỔ BIẾN -->
+<div class="category-wrapper">
+    <h2 style="margin-bottom: 16px;">Danh mục phổ biến</h2>
+
+    <div class="category-row">
+        {% for cat in categories[0:9] %}
+        <div class="category-item">
+            <img src="{{ url_for('static', filename='images/' + cat.image) }}" alt="{{ cat.name }}">
+            <p class="category-name">{{ cat.name }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="category-row">
+        {% for cat in categories[9:18] %}
+        <div class="category-item">
+            <img src="{{ url_for('static', filename='images/' + cat.image) }}" alt="{{ cat.name }}">
+            <p class="category-name">{{ cat.name }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 🛍️ SẢN PHẨM NỔI BẬT -->
+<div class="product-section">
+    <h2>Sản phẩm nổi bật</h2>
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <h3>{{ product.name }}</h3>
+            <p>Giá: {{ product.price }} VNĐ</p>
+            <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="add-to-cart-btn">🛒 Thêm vào giỏ</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

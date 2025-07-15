@@ -53,7 +53,12 @@
         </div>
 
         <div class="navbar-right">
+        <div class="cart-wrapper">
             <a href="{{ url_for('cart') }}" class="cart-icon">🛒</a>
+            {% if cart_count > 0 %}
+            <div class="cart-badge">{{ cart_count }}</div>
+            {% endif %}
+        </div>
         </div>
         {% endif %}
     </nav>
@@ -83,6 +88,21 @@
             setTimeout(() => el.remove(), 500);
         });
     }, 2000);
+    </script>
+
+<!-- Banner -->
+    <script>
+    let bigIndex = 0;
+    const bigSlides = document.querySelectorAll('.big-slide');
+
+    function showBigSlide() {
+        bigSlides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === bigIndex);
+        });
+        bigIndex = (bigIndex + 1) % bigSlides.length;
+    }
+
+    setInterval(showBigSlide, 4000); // auto trượt 4s/lần
     </script>
 
 </body>

@@ -31,11 +31,45 @@ def save_users(users):
         json.dump(users, f)
 
 # ==== TRANG CHỦ ====
+
+categories = [
+    {"name": "Thời trang nam", "image": "aonam.png"},
+    {"name": "Thời trang nữ", "image": "aonu.png"},
+    {"name": "Điện thoại", "image": "dienthoai.png"},
+    {"name": "Thiết bị điện tử", "image": "thietbi.png"},
+    {"name": "Máy tính & Laptop", "image": "laptop.png"},
+    {"name": "Đồ gia dụng", "image": "giadung.png"},
+    {"name": "Giày dép", "image": "giaydep.png"},
+    {"name": "Sức khỏe", "image": "suckhoe.png"},
+    {"name": "Đồ chơi & Sở thích", "image": "dochoi.png"},
+    {"name": "Thể thao & Outdoor", "image": "thethao.png"},
+    {"name": "Thú cưng", "image": "thucung.png"},
+    {"name": "Mẹ và bé", "image": "mevabe.png"},
+    {"name": "Nhà cửa & đời sống", "image": "nhacua.png"},
+    {"name": "Phụ kiện", "image": "phukien.png"},
+    {"name": "Nội thất", "image": "noithat.png"},
+    {"name": "Mỹ phẩm", "image": "mypham.png"},
+    {"name": "Nhà sách online", "image": "nhasach.png"},
+    {"name": "Khác", "image": "bacham.png"},
+]
+
+
+@app.context_processor
+def inject_cart_count():
+    if 'user' in session and 'carts' in session:
+        user_cart = session['carts'].get(session['user'], [])
+        unique_ids = set(user_cart)  # chỉ đếm mỗi sản phẩm 1 lần
+        return {'cart_count': len(unique_ids)}
+    return {'cart_count': 0}
+
 @app.route('/')
 def home():
+    user = session.get('user')
     cart = session.get(f"cart_{session['user']}", []) if is_logged_in() else []
     user = session.get('user')
-    return render_template("index.html", products=products, cart=cart, user=user)
+    return render_template("index.html", products=products, cart=cart, user=user, categories=categories)
+    cart_count = len(set(cart))  # Đếm số loại sản phẩm duy nhất
+    return render_template("index.html", products=products, cart=cart, user=user, cart_count=cart_count)
 
 # ==== GIỎ HÀNG ====
 @app.route('/add-to-cart/<int:product_id>')
@@ -44,16 +78,16 @@ def add_to_cart(product_id):
         flash("Bạn cần đăng nhập để mua hàng!")
         return redirect(url_for('login'))
 
-    username = session['user']
-    cart_key = f"cart_{username}"
+    user = session['user']
+    if 'carts' not in session:
+        session['carts'] = {}
 
-    if cart_key not in session:
-        session[cart_key] = []
+    if user not in session['carts']:
+        session['carts'][user] = []
 
-    session[cart_key].append(product_id)
+    session['carts'][user].append(product_id)
     session.modified = True
     return redirect(url_for('home'))
-
 
 @app.route('/cart')
 def cart():
@@ -61,7 +95,8 @@ def cart():
         flash("Bạn cần đăng nhập để xem giỏ hàng!")
         return redirect(url_for('login'))
 
-    cart_ids = session.get('cart', [])
+    user = session['user']
+    cart_ids = session.get('carts', {}).get(user, [])
     cart_items = []
     total = 0
 
@@ -90,10 +125,8 @@ def increase(product_id):
     if not is_logged_in():
         return redirect(url_for('login'))
 
-    if 'cart' not in session:
-        return redirect(url_for('cart'))
-
-    session['cart'].append(product_id)
+    user = session['user']
+    session['carts'][user].append(product_id)
     session.modified = True
     return redirect(url_for('cart'))
 
@@ -102,11 +135,9 @@ def decrease(product_id):
     if not is_logged_in():
         return redirect(url_for('login'))
 
-    if 'cart' not in session:
-        return redirect(url_for('cart'))
-
+    user = session['user']
     try:
-        session['cart'].remove(product_id)
+        session['carts'][user].remove(product_id)
         session.modified = True
     except ValueError:
         pass
@@ -117,10 +148,8 @@ def remove(product_id):
     if not is_logged_in():
         return redirect(url_for('login'))
 
-    if 'cart' not in session:
-        return redirect(url_for('cart'))
-
-    session['cart'] = [pid for pid in session['cart'] if pid != product_id]
+    user = session['user']
+    session['carts'][user] = [pid for pid in session['carts'][user] if pid != product_id]
     session.modified = True
     return redirect(url_for('cart'))
 
@@ -160,7 +189,6 @@ def login():
             return redirect(url_for('login'))
 
         session['user'] = username
-        #flash("✅ Đăng nhập thành công!")
         return redirect(url_for('home'))
 
     return render_template('auth.html', register=False)
