@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "name": "Áo thun nam",
+    "price": 120000,
+    "category_id": 1,
+    "category_slug": "thoitrang-nam"
+  },
+  {
+    "id": 2,
+    "name": "Quần jeans nữ",
+    "price": 250000,
+    "category_id": 2,
+    "category_slug": "thoitrang-nu"
+  },
+  {
+    "id": 3,
+    "name": "iPhone 13",
+    "price": 18000000,
+    "category_id": 3,
+    "category_slug": "dien-thoai"
+  },
+  {
+    "id": 4,
+    "name": "Laptop Dell",
+    "price": 15000000,
+    "category_id": 5,
+    "category_slug": "may-tinh"
+  },
+  {
+    "id": 5,
+    "name": "Máy sấy tóc",
+    "price": 300000,
+    "category_id": 6,
+    "category_slug": "dogia-dung"
+  },
+  {
+    "id": 6,
+    "name": "Giày sneaker",
+    "price": 500000,
+    "category_id": 7,
+    "category_slug": "giay-dep"
+  },
+  {
+    "id": 7,
+    "name": "Iphone 16 Pro Max",
+    "price": 34000000,
+    "category_id": 3,
+    "category_slug": "dien-thoai"
+  }
+]

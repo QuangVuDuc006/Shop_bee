@@ -1,58 +1,79 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- 🖼️ BANNER -->
+
+<!-- BANNER -->
 <div class="homepage-banner">
-    <!-- ẢNH TO BÊN TRÁI (Slideshow) -->
-    <div class="banner-left">
-        <div class="big-banner-slider">
-            <img src="{{ url_for('static', filename='banner/banner1.png') }}" class="big-slide active" alt="Banner 1">
-            <img src="{{ url_for('static', filename='banner/banner4.png') }}" class="big-slide" alt="Banner 2">
-            <img src="{{ url_for('static', filename='banner/banner5.png') }}" class="big-slide" alt="Banner 3">
-        </div>
+  <div class="banner-left">
+    <div class="big-banner-slider">
+      <img src="{{ url_for('static', filename='banner/banner1.png') }}" class="big-slide active" alt="Banner 1">
+      <img src="{{ url_for('static', filename='banner/banner4.png') }}" class="big-slide" alt="Banner 2">
+      <img src="{{ url_for('static', filename='banner/banner5.png') }}" class="big-slide" alt="Banner 3">
     </div>
-
-    <!-- 2 ẢNH NHỎ BÊN PHẢI -->
-    <div class="banner-right">
-        <img src="{{ url_for('static', filename='banner/banner2.png') }}" class="small-banner" alt="Small 1">
-        <img src="{{ url_for('static', filename='banner/banner3.png') }}" class="small-banner" alt="Small 2">
-    </div>
+  </div>
+  <div class="banner-right">
+    <img src="{{ url_for('static', filename='banner/banner2.png') }}" class="small-banner" alt="Small 1">
+    <img src="{{ url_for('static', filename='banner/banner3.png') }}" class="small-banner" alt="Small 2">
+  </div>
 </div>
 
-<!-- 🗂️ DANH MỤC PHỔ BIẾN -->
+<!-- FEATURE BAR -->
+<div class="feature-bar">
+  {% set features = [
+    ('voucher.png', 'Mã Giảm Giá'),
+    ('choice.png', 'Hàng Chọn<br>Giá Hời'),
+    ('flashsale.png', 'Deal Hot<br>Giờ Vàng'),
+    ('style.png', 'Shop_Bee Style<br>Voucher 30%'),
+    ('gift.png', 'Săn Ngay<br>100.000 Xu'),
+    ('loyal.png', 'Khách Hàng<br>Thân Thiết')
+  ] %}
+  {% for icon, text in features %}
+  <div class="feature-item">
+    <img src="{{ url_for('static', filename='features/' ~ icon) }}" alt="">
+    <p>{{ text | safe }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- DANH MỤC PHỔ BIẾN -->
 <div class="category-wrapper">
-    <h2 style="margin-bottom: 16px;">Danh mục phổ biến</h2>
+  <h2 style="margin-bottom: 16px;">Danh mục phổ biến</h2>
 
-    <div class="category-row">
-        {% for cat in categories[0:9] %}
-        <div class="category-item">
-            <img src="{{ url_for('static', filename='images/' + cat.image) }}" alt="{{ cat.name }}">
-            <p class="category-name">{{ cat.name }}</p>
-        </div>
-        {% endfor %}
-    </div>
+  <div class="category-row">
+    {% for cat in categories[0:9] %}
+    <a href="{{ url_for('show_category_by_slug', slug=cat.slug) }}" class="category-link">
+      <div class="category-item">
+        <img src="{{ url_for('static', filename='images/' + cat.image) }}" alt="{{ cat.name }}">
+        <p class="category-name">{{ cat.name }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 
-    <div class="category-row">
-        {% for cat in categories[9:18] %}
-        <div class="category-item">
-            <img src="{{ url_for('static', filename='images/' + cat.image) }}" alt="{{ cat.name }}">
-            <p class="category-name">{{ cat.name }}</p>
-        </div>
-        {% endfor %}
-    </div>
+  <div class="category-row">
+    {% for cat in categories[9:18] %}
+    <a href="{{ url_for('show_category_by_slug', slug=cat.slug) }}" class="category-link">
+      <div class="category-item">
+        <img src="{{ url_for('static', filename='images/' + cat.image) }}" alt="{{ cat.name }}">
+        <p class="category-name">{{ cat.name }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 </div>
 
-<!-- 🛍️ SẢN PHẨM NỔI BẬT -->
+<!-- SẢN PHẨM NỔI BẬT -->
 <div class="product-section">
-    <h2>Sản phẩm nổi bật</h2>
-    <div class="product-grid">
-        {% for product in products %}
-        <div class="product-card">
-            <h3>{{ product.name }}</h3>
-            <p>Giá: {{ product.price }} VNĐ</p>
-            <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="add-to-cart-btn">🛒 Thêm vào giỏ</a>
-        </div>
-        {% endfor %}
+  <h2>Sản phẩm nổi bật</h2>
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+      <h3>{{ product.name }}</h3>
+      <p>Giá: {{ "{:,.0f}".format(product.price) }} VNĐ</p>
+      <button class="add-to-cart-btn" data-product-id="{{ product.id }}">🛒 Thêm vào giỏ hàng</button>
     </div>
+    {% endfor %}
+  </div>
 </div>
+
 {% endblock %}

@@ -25,6 +25,13 @@
         </div>
         <div class="topbar-right">
             {% if session.get('user') %}
+                <div class="balance-info">
+                    {% if user_balance is defined %}
+                        Số dư: <span class="balance-amount">{{ "{:,.0f}".format(user_balance or 0) }}</span> VNĐ
+                    {% else %}
+                        Số dư: <span class="balance-amount">0</span> VNĐ
+                    {% endif %}
+                </div>
                 <span>👋 Xin chào, {{ session['user'] }}</span>
                 <a href="{{ url_for('logout') }}">Đăng xuất</a>
             {% else %}
@@ -53,22 +60,23 @@
         </div>
 
         <div class="navbar-right">
-        <div class="cart-wrapper">
-            <a href="{{ url_for('cart') }}" class="cart-icon">🛒</a>
-            {% if cart_count > 0 %}
-            <div class="cart-badge">{{ cart_count }}</div>
-            {% endif %}
-        </div>
-        </div>
+  <div class="cart-wrapper">
+    <a href="{{ url_for('cart') }}" class="cart-icon">
+      🛒
+      <span class="cart-badge {% if cart_count == 0 %}hidden{% endif %}">{{ cart_count }}</span>
+    </a>
+  </div>
+</div>
+
         {% endif %}
     </nav>
 
-    <!-- 💬 FLASH MESSAGES -->
+    <!-- 💬 FLASH MESSAGE ở góc dưới phải -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <div class="flash-container">
+    <div class="bottom-flash-container">
         {% for message in messages %}
-        <div class="flash">{{ message }}</div>
+        <div class="bottom-flash">{{ message }}</div>
         {% endfor %}
     </div>
     {% endif %}
@@ -79,31 +87,22 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- 🔧 SCRIPT TỰ ẨN THÔNG BÁO -->
+    <!-- 🛒 TOAST khi thêm vào giỏ hàng -->
+    <div id="toast" class="toast-message">🛒 Đã thêm vào giỏ hàng!</div>
+
+    <!-- ✅ SCRIPT -->
     <script>
-    setTimeout(() => {
-        document.querySelectorAll('.flash').forEach(el => {
-            el.style.transition = 'opacity 0.5s ease';
-            el.style.opacity = '0';
-            setTimeout(() => el.remove(), 500);
-        });
-    }, 2000);
+        // Flash message tự động biến mất
+        setTimeout(() => {
+            document.querySelectorAll('.bottom-flash').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                setTimeout(() => el.remove(), 500);
+            });
+        }, 2000);
     </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-<!-- Banner -->
-    <script>
-    let bigIndex = 0;
-    const bigSlides = document.querySelectorAll('.big-slide');
-
-    function showBigSlide() {
-        bigSlides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === bigIndex);
-        });
-        bigIndex = (bigIndex + 1) % bigSlides.length;
-    }
-
-    setInterval(showBigSlide, 4000); // auto trượt 4s/lần
-    </script>
 
 </body>
 </html>

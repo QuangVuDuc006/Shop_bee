@@ -1,1 +1,14 @@
-{"bin": "scrypt:32768:8:1$35e43Gx7ctk1qbtc$c1768829e72fdd4af0b8a27afc6ee0c6fcb95debc49b72253803ca7ccd1a928739a355ebbdef6eb65001f04e6093540c2b39638b5c9017581246c8663ea582ba", "jun": "scrypt:32768:8:1$AkFZf2eOsD2xKtlV$28b4d8f00c40277a2329f1f14f5840334af0e662be1f9c1ab668a5dfe75e06c2ec1da42e66aba3d9472928796b625a3df5021a159cadb4098a84a14479193fab"}
+{
+  "jun": {
+    "password_hash": "scrypt:32768:8:1$0upaqFFDL18JsOs2$e72c6a963e95c7c9d2ed320ba9e50c562a53d2240178aec4888e6a3689bda2d94a4ef7d6e6e152da9a18f2c492e007d190b691c837de98bffdaf51369c57ee5b",
+    "balance": 0
+  },
+  "quang": {
+    "password_hash": "scrypt:32768:8:1$ED1W19J64a5XlopZ$208f0de13ed657d71b847f236d1016a5f11d951c30f90d25c456762955ad705ad756fd797f4a854a96874fde99e418b329b4ba309b06352fa662b3fc0e8ad08e",
+    "balance": 0
+  },
+  "quangvuduc": {
+    "password_hash": "scrypt:32768:8:1$hWBud5PKehUAfti6$471a52875da9b0e1b7785e2a8ae4bc81f115e27c36525dc556687f0aedcc4b1eb98490d04e46256739387cffaed68b4220b93617b740f4c77a6f28a451cc45da",
+    "balance": 0
+  }
+}
