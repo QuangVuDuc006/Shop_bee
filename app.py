@@ -145,7 +145,7 @@ def home():
     return render_template("index.html", products=all_products, categories=CATEGORIES)
 def index():
     try:
-        response = requests.get("https://shop-bê-admin.onrender.com/api/products")
+        response = requests.get("https://shop-bee-admin.onrender.com/api/products")
         products = response.json()
     except Exception as e:
         products = []
