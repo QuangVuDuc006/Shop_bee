@@ -2,20 +2,21 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Shop Bee</title>
+    <title>{{ global_shop_info.shop_name }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <!-- 🔝 TOPBAR -->
     <div class="topbar">
         <div class="topbar-left">
             <a href="#">Kênh Người Bán</a>
-            <span>|</span>
-            <a href="#">Tải ứng dụng</a>
-            <span>|</span>
-            <span>Kết nối</span>
+                <span>|</span>
+                <a href="#">Tải ứng dụng</a>
+                <span>|</span>
+                <a href="{{ url_for('distributors') }}">Nhà phân phối</a> {# THÊM LINK NÀY #}
+                <span>|</span>
+                <span>Kết nối</span>
             <a href="https://www.facebook.com/quang.vu.uc.579118" target="_blank">
                 <img src="{{ url_for('static', filename='facebook.png') }}" class="social-icon" alt="Facebook">
             </a>
@@ -41,12 +42,12 @@
         </div>
     </div>
 
-    <!-- 🧭 NAVBAR -->
     <nav class="navbar">
         <div class="navbar-left">
             <div class="logo-slogan">
                 <a href="{{ url_for('home') }}" class="logo">
-                    <img src="{{ url_for('static', filename='logo.png') }}" alt="ShopBee Logo" class="logo-img">
+                    {# LUÔN DÙNG LOGO CHÍNH (logo.png) CHO NAVBAR #}
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ global_shop_info.shop_name }} Logo" class="logo-img">
                 </a>
                 <div class="logo-divider"></div>
                 <span class="slogan">Mua sắm thả ga <br> Không lo về giá</span>
@@ -71,7 +72,6 @@
         {% endif %}
     </nav>
 
-    <!-- 💬 FLASH MESSAGE ở góc dưới phải -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class="bottom-flash-container">
@@ -82,15 +82,12 @@
     {% endif %}
     {% endwith %}
 
-    <!-- 📦 MAIN CONTENT -->
     <div class="main-content">
         {% block content %}{% endblock %}
     </div>
 
-    <!-- 🛒 TOAST khi thêm vào giỏ hàng -->
     <div id="toast" class="toast-message">🛒 Đã thêm vào giỏ hàng!</div>
 
-    <!-- ✅ SCRIPT -->
     <script>
         // Flash message tự động biến mất
         setTimeout(() => {

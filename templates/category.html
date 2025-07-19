@@ -4,11 +4,24 @@
   <h2>{{ category.name }}</h2>
   <div class="product-grid">
     {% for product in products %}
-      <div class="product-card">
-          <h3>{{ product.name }}</h3>
-          <p>Giá: {{ "{:,.0f}".format(product.price) }} VNĐ</p>
-          <button class="add-to-cart-btn" data-product-id="{{ product.id }}">🛒 Thêm vào giỏ</button>
-      </div>
+      <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-card-link">
+        <div class="product-card">
+          {% if product.image %}
+            <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}" class="product-image">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default.jpg') }}" alt="Ảnh mặc định" class="product-image">
+          {% endif %}
+            <h3>{{ product.name }}</h3>
+            <p class="price">
+                {% if product.variants %}
+                    {{ "{:,.0f}".format(product.variants[0].price) }} VNĐ
+                {% else %}
+                    Liên hệ
+                {% endif %}
+            </p>
+            <button type="button" class="add-to-cart-btn" data-product-id="{{ product.id }}">🛒 Thêm vào giỏ</button>
+        </div>
+      </a>
     {% endfor %}
   </div>
 </div>

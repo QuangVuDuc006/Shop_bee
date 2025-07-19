@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="distributors-container">
+    <h1>Nhà Phân Phối</h1>
+    <p class="distributors-intro">Khám phá các cửa hàng đối tác của chúng tôi:</p>
+
+    {% if shops %}
+    <div class="shops-grid">
+        {% for shop in shops %}
+        <a href="{{ url_for('shop_profile', username=shop.username) }}" class="shop-card-link">
+            <div class="shop-card">
+                <div class="shop-card-avatar">
+                    {% if shop.shop_avatar %}
+                        <img src="{{ url_for('static', filename='shop_assets/' + shop.shop_avatar) }}" alt="{{ shop.shop_name }} Avatar" class="shop-avatar-thumbnail">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='shop_assets/default_shop_avatar.png') }}" alt="Default Avatar" class="shop-avatar-thumbnail">
+                    {% endif %}
+                </div>
+                <h3 class="shop-card-name">{{ shop.shop_name }}</h3>
+                <p class="shop-card-hotline">Hotline: {{ shop.hotline }}</p>
+                <p class="shop-card-address">{{ shop.address }}</p>
+                <span class="view-shop-btn">Xem Shop</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p class="no-shops">Hiện chưa có nhà phân phối nào được đăng ký.</p>
+    {% endif %}
+
+    <div class="back-home-link">
+        <a href="{{ url_for('home') }}">⬅️ Quay về trang chủ</a>
+    </div>
+</div>
+{% endblock %}

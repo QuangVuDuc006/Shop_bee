@@ -8,35 +8,49 @@
         <table class="cart-table">
             <thead>
                 <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th>Thành tiền</th>
-                    <th>Thao tác</th>
+                    <th class="th-product">Sản phẩm</th>
+                    <th class="th-price">Đơn giá</th>
+                    <th class="th-quantity">Số lượng</th>
+                    <th class="th-subtotal">Thành tiền</th>
+                    <th class="th-action">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in cart %}
                 <tr>
-                    <td>{{ item.name }}</td>
+                    <td>
+                        <div class="cart-product-cell">
+                            <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.name }}" class="cart-product-image">
+                            <span class="cart-product-name">{{ item.name }}</span>
+                        </div>
+                    </td>
                     <td>{{ "{:,.0f}".format(item.price) }} VNĐ</td>
                     <td>
-                        <a href="{{ url_for('decrease', product_id=item.id) }}">➖</a>
-                        {{ item.quantity }}
-                        <a href="{{ url_for('increase', product_id=item.id) }}">➕</a>
+                        <div class="quantity-control">
+                            <a href="{{ url_for('decrease', product_id=item.id) }}" class="quantity-btn">－</a>
+                            <span class="quantity-value">{{ item.quantity }}</span>
+                            <a href="{{ url_for('increase', product_id=item.id) }}" class="quantity-btn">＋</a>
+                        </div>
                     </td>
                     <td>{{ "{:,.0f}".format(item.subtotal) }} VNĐ</td>
                     <td>
-                        <a href="{{ url_for('remove', product_id=item.id) }}" class="remove-btn">❌</a>
+                        <a href="{{ url_for('remove', sku=item.sku) }}" class="remove-btn" title="Xóa sản phẩm">❌</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <h2 class="cart-total">💰 Tổng cộng: {{ "{:,.0f}".format(total) }} VNĐ</h2>
+        <div class="cart-summary">
+             <h2 class="cart-total">💰 Tổng cộng: {{ "{:,.0f}".format(total) }} VNĐ</h2>
+             <a href="#" class="checkout-btn">Tiến hành Thanh toán</a>
+        </div>
+
     {% else %}
-        <p class="empty-cart">Giỏ hàng đang trống 😢</p>
+        <div class="empty-cart">
+            <p>Giỏ hàng của bạn đang trống 😢</p>
+            <a href="{{ url_for('home') }}" class="back-link">⬅️ Quay lại mua sắm</a>
+        </div>
     {% endif %}
 
     <div class="back-home">

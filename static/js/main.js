@@ -21,7 +21,7 @@ function handleFlashMessages() {
 
 // 🛒 Xử lý nút "Thêm vào giỏ hàng"
 function setupAddToCartButtons() {
-    const buttons = document.querySelectorAll('.add-to-cart-btn');
+    const buttons = document.querySelectorAll('.product-card .add-to-cart-btn');
     const cartBadge = document.querySelector('.cart-badge');
     const toast = document.getElementById('toast');
 

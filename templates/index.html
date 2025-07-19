@@ -2,7 +2,6 @@
 
 {% block content %}
 
-<!-- BANNER -->
 <div class="homepage-banner">
   <div class="banner-left">
     <div class="big-banner-slider">
@@ -17,7 +16,6 @@
   </div>
 </div>
 
-<!-- FEATURE BAR -->
 <div class="feature-bar">
   {% set features = [
     ('voucher.png', 'Mã Giảm Giá'),
@@ -35,7 +33,6 @@
   {% endfor %}
 </div>
 
-<!-- DANH MỤC PHỔ BIẾN -->
 <div class="category-wrapper">
   <h2 style="margin-bottom: 16px;">Danh mục phổ biến</h2>
 
@@ -62,16 +59,43 @@
   </div>
 </div>
 
-<!-- SẢN PHẨM NỔI BẬT -->
 <div class="product-section">
   <h2>Sản phẩm nổi bật</h2>
   <div class="product-grid">
     {% for product in products %}
-    <div class="product-card">
-      <h3>{{ product.name }}</h3>
-      <p>Giá: {{ "{:,.0f}".format(product.price) }} VNĐ</p>
-      <button class="add-to-cart-btn" data-product-id="{{ product.id }}">🛒 Thêm vào giỏ hàng</button>
-    </div>
+    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-card-link">
+      <div class="product-card">
+        {% if product.image %}
+          <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}" class="product-image">
+        {% else %}
+          <img src="{{ url_for('static', filename='images/default.jpg') }}" alt="Ảnh mặc định" class="product-image">
+        {% endif %}
+        <h3>{{ product.name }}</h3>
+                <p class="price">
+            {% if product.variants %}
+                {{ "{:,.0f}".format(product.variants[0].price) }} VNĐ
+            {% else %}
+                Liên hệ
+            {% endif %}
+        </p>
+        
+        {# Hiển thị thông tin shop nhỏ dưới sản phẩm #}
+        <div class="product-seller-info">
+            {% if product.shop_name %}
+                <a href="{{ url_for('shop_profile', username=product.seller_username) }}" class="seller-link">
+                    {% if product.shop_avatar %}
+                        <img src="{{ url_for('static', filename='shop_assets/' + product.shop_avatar) }}" alt="{{ product.shop_name }} Avatar" class="seller-avatar-tiny">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='shop_assets/default_shop_avatar.png') }}" alt="Default Avatar" class="seller-avatar-tiny">
+                    {% endif %}
+                    <span>{{ product.shop_name }}</span>
+                </a>
+            {% endif %}
+        </div>
+
+        <button type="button" class="add-to-cart-btn" data-product-id="{{ product.id }}">🛒 Thêm vào giỏ hàng</button>
+      </div>
+    </a>
     {% endfor %}
   </div>
 </div>
