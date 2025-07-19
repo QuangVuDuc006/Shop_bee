@@ -5,6 +5,8 @@ import os
 from flask import Flask, render_template, redirect, url_for, session, request, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+import requests
+
 
 # ==============================================================================
 # KHỞI TẠO ỨNG DỤNG FLASK
@@ -141,6 +143,13 @@ def home():
         product['shop_avatar'] = shop_info.get('shop_avatar', "default_shop_avatar.png")
 
     return render_template("index.html", products=all_products, categories=CATEGORIES)
+def index():
+    try:
+        response = requests.get("https://shop-bê-admin.onrender.com/api/products")
+        products = response.json()
+    except Exception as e:
+        products = []
+    return render_template("index.html", products=products)
 
 @app.route('/product/<int:product_id>')
 def product_detail(product_id):
